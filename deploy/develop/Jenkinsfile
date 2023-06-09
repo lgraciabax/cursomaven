@@ -21,6 +21,24 @@ pipeline {
                 }
              }
 
+
+            stage('resolverdependencia'){
+            steps{
+                script{
+                        dir("EjemploMaven/"){
+
+                            echo "generando dependencia"
+                            sh " mvn dependency:resolve"
+                            sh 'mvn package'
+                            sh "mvn install"
+                                                        
+                        }
+                        
+                    }
+                }
+             }
+
+
              stage('generar documentacion'){
             steps{
                 script{
