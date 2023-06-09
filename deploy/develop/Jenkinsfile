@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    
+    tools {
+        jdk 'JAVA11'
+        maven 'mvn392'
+    }
+
+    environment{
+        REGISTRYLOCATION = "https://www.google.com/"
+    }
+    
+     stages {
+           stage('Initialize'){
+            steps{
+                script{
+                        echo "Inicializando"
+                        sh 'java --version'
+                        sh "mvn -version"
+                    }
+                }
+             }
+
+             stage('generar documentacion'){
+            steps{
+                script{
+                        dir("EjemploMaven2/"){
+
+                            echo "generando documentacion"
+                            sh 'mvn pmd:pmd'
+                            sh "mvn checkstyle:checkstyle"
+                            sh "mvn javadoc:javadoc"
+                            sh "mvn site:site"
+                        }
+                        
+                    }
+                }
+             }
+
+
+             
+     }
+
+     
+    
+}
