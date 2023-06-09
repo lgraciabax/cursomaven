@@ -25,7 +25,7 @@ pipeline {
             stage('resolverdependencia'){
             steps{
                 script{
-                        dir("EjemploMaven/"){
+                        dir("Services/EjemploMaven/"){
 
                             echo "generando dependencia"
                             sh " mvn dependency:resolve"
@@ -42,7 +42,7 @@ pipeline {
              stage('generar documentacion'){
             steps{
                 script{
-                        dir("EjemploMaven2/"){
+                        dir("Services/EjemploMaven2/"){
 
                             echo "generando documentacion"
                             sh " mvn dependency:resolve"
