@@ -23,7 +23,7 @@ pipeline {
             stage('resolver dependencias'){
             steps{
                 script{
-                        dir("EjemploMaven/"){
+                        dir("services/EjemploMaven/"){
                             echo "Generando Dependencias"
                             sh "mvn dependency:resolve"
                             sh "mvn package"
@@ -36,13 +36,27 @@ pipeline {
             stage('generar documentacion'){
             steps{
                 script{
-                        dir("EjemploMaven2/"){
+                        dir("services/EjemploMaven2/"){
                             echo "Generando Documentacion"
                             sh "mvn dependency:resolve"
                             sh 'mvn pmd:pmd'
                             sh "mvn checkstyle:checkstyle"
                             sh "mvn javadoc:javadoc"
                             sh "mvn site:site"
+                            
+                        }
+                        
+                    }
+                }
+             }
+             stage('Analisis de codigo estatico'){
+            steps{
+                script{
+                        dir("services/EjemploMaven2/"){
+                            echo "Analizando código"
+                            withCredentials([usernamePassword(credentialsId: 'SONARTOKEN', passwordVariable: 'secret', usernameVariable: 'user')]) {
+                            sh "mvn clean verify sonar:sonar -Dsonar.login=$secret"
+                            }
                             
                         }
                         
